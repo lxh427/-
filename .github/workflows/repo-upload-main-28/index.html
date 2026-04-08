@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>达盈镜 | 个股影响因子引擎</title>
+  <link rel="stylesheet" href="./styles.css?v=20260405-cleanup" />
+</head>
+<body>
+  <div class="backdrop backdrop-a"></div>
+  <div class="backdrop backdrop-b"></div>
+
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">A 股个股影响证据引擎</p>
+        <h1>达盈镜</h1>
+        <p class="hero-text">
+          不是堆新闻，而是站在单只股票视角，把某段时间里真正会影响它的一条条证据拎出来。
+        </p>
+      </div>
+      <div class="hero-panel">
+        <div class="hero-chip">直接关联</div>
+        <div class="hero-chip">产业链传导</div>
+        <div class="hero-chip">宏观地缘</div>
+        <div class="hero-chip">公告正文</div>
+        <div class="hero-chip">证据导出</div>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="query-card">
+        <div class="section-title">
+          <span>查询条件</span>
+          <small>先输入股票，再设定时间窗，系统会自动走综合模式</small>
+        </div>
+
+        <div class="form-grid">
+          <label class="field field-stock">
+            <span>股票名称 / 代码</span>
+            <input id="stockQuery" type="text" placeholder="例如：长春高新、000661、川大智胜" />
+            <small class="field-hint">直接手动输入股票名称或代码即可，系统默认按综合模式筛选，不需要再额外选模式。</small>
+          </label>
+
+          <label class="field">
+            <span>开始日期</span>
+            <input id="dateFrom" type="date" />
+          </label>
+
+          <label class="field">
+            <span>结束日期</span>
+            <input id="dateTo" type="date" />
+          </label>
+        </div>
+
+        <div class="actions">
+          <button id="runSearch" class="primary">开始筛选</button>
+          <button id="exportCsv" class="secondary">导出 Excel</button>
+          <button id="exportRawCsv" class="secondary subtle-action">导出 CSV</button>
+          <button id="resetSearch" class="ghost">重置</button>
+        </div>
+
+        <div id="stockBrief" class="stock-brief empty">
+          选中股票后，这里会显示该股票画像、敏感因子、别名线索和已识别的关联路径。
+        </div>
+      </section>
+
+      <section class="summary-card">
+        <div class="section-title">
+          <span>结果总览</span>
+          <small>只看抓取质量、关联结构和来源覆盖，不展示预测结论</small>
+        </div>
+
+        <div class="stats">
+          <article class="stat">
+            <span class="stat-label">有效证据</span>
+            <strong id="statNews">0</strong>
+          </article>
+          <article class="stat">
+            <span class="stat-label">覆盖事件</span>
+            <strong id="statEvents">0</strong>
+          </article>
+          <article class="stat">
+            <span class="stat-label">硬/半显式</span>
+            <strong id="statDirect">0</strong>
+          </article>
+          <article class="stat">
+            <span class="stat-label">映射/软关联</span>
+            <strong id="statImplicit">0</strong>
+          </article>
+        </div>
+
+        <div id="reasonStrip" class="reason-strip">
+          <span class="reason-tag muted">等待查询</span>
+        </div>
+
+        <div id="intelBoard" class="intel-board"></div>
+        <div id="timelineBoard" class="timeline-board"></div>
+      </section>
+
+      <section class="results-card">
+        <div class="section-title">
+          <span>证据流</span>
+          <small>主视图只展示正文确认后的证据条目，原始正文只在后台处理</small>
+        </div>
+
+        <div id="results" class="results-list"></div>
+      </section>
+
+      <aside class="notes-card">
+        <div class="section-title">
+          <span>使用说明</span>
+          <small>页面只做证据抓取与结构化，不负责预测涨跌</small>
+        </div>
+        <ul class="notes-list">
+          <li>系统先抓原始正文，再提炼关键证据句，前台默认不展示原始正文。</li>
+          <li>主视图只保留正文确认后的证据，摘要候选不会直接混进来。</li>
+          <li>每条结果都区分关联层级，尽量把硬关联、映射关联、软关联拆开看。</li>
+          <li>导出按证据粒度展开，只保留证据文本、时间、层级、来源和链接这些关键字段。</li>
+          <li>回测模块已预留接口，但当前网站职责只到“抓证据、整理证据、导出证据”为止。</li>
+        </ul>
+      </aside>
+    </main>
+  </div>
+
+  <script src="./app.js?v=20260406-simplified"></script>
+</body>
+</html>
+
