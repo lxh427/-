@@ -1,1 +1,67 @@
+name: Build Desktop Packages
 
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --no-progress -y
+
+      - name: Build Windows packages
+        shell: pwsh
+        run: powershell -ExecutionPolicy Bypass -File .\packaging\build_windows.ps1 -BuildInstaller
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dayingjing-windows-package
+          path: |
+            dist/*windows.exe
+            dist/DaYingJingLauncher.exe
+            dist/DaYingJingServer.exe
+          if-no-files-found: error
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build macOS packages
+        run: |
+          chmod +x ./packaging/build_macos.sh
+          ./packaging/build_macos.sh
+
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dayingjing-macos-package
+          path: |
+            dist/*-mac.zip
+            dist/*.app
+          if-no-files-found: error
